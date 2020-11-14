@@ -51,11 +51,15 @@ class User(object):
         pic = self.session.get(url).content
         filename = os.path.basename(url)
         filename = filename[::-1][filename[::-1].index("?") + 1:][::-1]
-        with open(self.currentBrowseAnswer.author + "/" + self.currentBrowseAnswer.id + "@" + filename, "wb") as f:
+        with open(dir + "/" + self.currentBrowseAnswer.author + "/" + self.currentBrowseAnswer.id + "@" + filename,
+                  "wb") as f:
             f.write(pic)
 
 
 if __name__ == '__main__':
+    dir = "pic"
+    if not os.path.exists(dir):
+        os.mkdir(dir)
     cookie = open("COOKIE", "r", encoding="utf-8")
     user = User(cookie.read())
     while True:
@@ -72,7 +76,8 @@ if __name__ == '__main__':
         user.currentBrowseAnswer.response = user.getZhiHuAnswerWeb()
         user.currentBrowseAnswer.author = user.getAnswerAuthor()
         # 没有答主的目录则创建
-        if not os.path.exists(user.currentBrowseAnswer.author):
-            os.mkdir(user.currentBrowseAnswer.author)
+        authorPath = dir + "/" + user.currentBrowseAnswer.author
+        if not os.path.exists(authorPath):
+            os.mkdir(authorPath)
         user.currentBrowseAnswer.picURLList = user.extractPicURL()
         user.downloadPicList()

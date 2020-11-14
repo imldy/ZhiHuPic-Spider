@@ -51,7 +51,7 @@ class User(object):
         pic = self.session.get(url).content
         filename = os.path.basename(url)
         filename = filename[::-1][filename[::-1].index("?") + 1:][::-1]
-        with open(self.currentBrowseAnswer.author + "/" + filename, "wb") as f:
+        with open(self.currentBrowseAnswer.author + "/" + self.currentBrowseAnswer.id + "@" + filename, "wb") as f:
             f.write(pic)
 
 

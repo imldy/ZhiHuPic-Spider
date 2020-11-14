@@ -7,6 +7,8 @@
 
 Python3+requests+lxml
 
+另外准备你知乎账号的cookie，保存至程序根目录名为`COOKIE`的文件内
+
 ## 开始运行
 
 执行：`python main.py`或者`python3 main.py`

@@ -3,8 +3,7 @@ import requests
 import os
 
 
-def getZhiHuAnswerWeb(AID):
-    answerURL = "https://www.zhihu.com/answer/" + AID
+def getZhiHuAnswerWeb(answerURL):
     response = session.get(url=answerURL)
     return response
 
@@ -26,7 +25,7 @@ def downloadPic(url):
     pic = session.get(url).content
     filename = os.path.basename(url)
     filename = filename[::-1][filename[::-1].index("?") + 1:][::-1]
-    with open(answerID + "/" + filename, "wb") as f:
+    with open(inputArg + "/" + filename, "wb") as f:
         f.write(pic)
 
 
@@ -39,9 +38,13 @@ if __name__ == '__main__':
     }
 
     while True:
-        answerID = input("请输入知乎回答编号: ")
-        if not os.path.exists(answerID):
-            os.mkdir(answerID)
-        response = getZhiHuAnswerWeb(answerID)
+        inputArg = input("请输入知乎回答编号或链接: ")
+        if inputArg.isdigit():
+            answerURL = "https://www.zhihu.com/answer/" + inputArg
+        elif inputArg[:4] == "http":
+            answerURL = inputArg
+        else:
+            continue
+        response = getZhiHuAnswerWeb(answerURL)
         picURLList = extractPicURL(response)
         downloadPicList(picURLList)

@@ -17,9 +17,10 @@ class User(object):
         self.Cookie = cookie
         self.user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36"
         self.headers = {
-            "cookie": self.Cookie,
             "user-agent": self.user_agent
         }
+        if not cookie == None:
+            self.headers["cookie"] = self.Cookie
         self.session = requests.session()
         self.session.headers = self.headers
         self.currentBrowseAnswer = Answer()
@@ -60,8 +61,12 @@ if __name__ == '__main__':
     dir = "pic"
     if not os.path.exists(dir):
         os.mkdir(dir)
-    cookie = open("COOKIE", "r", encoding="utf-8")
-    user = User(cookie.read())
+    if os.path.exists("COOKIE"):
+        cookie = open("COOKIE", "r", encoding="utf-8")
+        user = User(cookie.read())
+        cookie.close()
+    else:
+        user = User(None)
     while True:
         inputArg = input("请输入知乎回答编号或链接: ")
         if inputArg.isdigit():
